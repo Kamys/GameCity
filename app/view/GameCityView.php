@@ -11,26 +11,57 @@ and open the template in the editor.
     </head>
     <body>
         <?php
-        if ($_SERVER["REQUEST_METHOD"] == "POST") {
+        logging("checkCookies = ", check_cookies());
+        if (check_post()) {
             $city_names = [];
-            if (array_key_exists("CITY_NAMES", $_COOKIE)) {
+            if (check_cookies()) {
                 $city_names = unserialize($_COOKIE["CITY_NAMES"]);
             }
-            array_push($city_names, $_POST['cityName']);
+            add_city_name_in_cookis($city_names);
             logging("Result = ", $city_names);
             setcookie("CITY_NAMES", serialize($city_names));
-            
-            foreach ($city_names as $value){
-                sayCity($value);
+
+            foreach ($city_names as $value) {
+                say_city($value);
             }
         }
         
-        function sayCity($city_name){
-            echo "<p>" . "$city_name" ."</p>";
+        function add_city_name_in_cookis(&$city_names){
+            $city_name_of_post = get_city_name_of_post();
+            if(check_string($city_name_of_post)){
+                logging("Add in cookies", $city_name_of_post);
+                array_push($city_names, $city_name_of_post);
+            }else{
+                logging("Not add in cookies", $city_name_of_post);
+            }
+            
+        }
+
+        function check_string($string) {
+//            logging("string", $string);
+//            logging("strlen", strlen($string));
+//            logging("strlen 2", strlen($string) > 0);
+            return strlen($string) > 0;
+        }
+
+        function get_city_name_of_post() {
+            return $_POST['cityName'];
+        }
+
+        function check_post() {
+            return $_SERVER["REQUEST_METHOD"] == "POST";
+        }
+
+        function check_cookies() {
+            return array_key_exists("CITY_NAMES", $_COOKIE);
+        }
+
+        function say_city($city_name) {
+            echo "<p>" . "$city_name" . "</p>";
         }
 
         function logging($messages, $args) {
-            echo $messages . ":";
+            echo $messages . ": ";
             print_r($args);
             echo "<br>";
         }
