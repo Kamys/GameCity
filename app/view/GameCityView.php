@@ -7,14 +7,17 @@ and open the template in the editor.
 <html>
     <head>
         <meta charset="UTF-8">
+        <meta charset="UTF-8">
         <title></title>
     </head>
     <body>
         <?php
-        logging("checkCookies = ", check_cookies());
+        logging('COOKIE', $_COOKIE);
+        logging('POST', $_POST);
         if (check_post()) {
+            clear();
             $city_names = [];
-            if (check_cookies()) {
+            if (array_key_exists('CITY_NAMES', $_COOKIE)) {
                 $city_names = unserialize($_COOKIE["CITY_NAMES"]);
             }
             add_city_name_in_cookis($city_names);
@@ -25,22 +28,29 @@ and open the template in the editor.
                 say_city($value);
             }
         }
-        
-        function add_city_name_in_cookis(&$city_names){
+
+        function add_city_name_in_cookis(&$city_names) {
             $city_name_of_post = get_city_name_of_post();
-            if(check_string($city_name_of_post)){
+            if (check_string($city_name_of_post)) {
                 logging("Add in cookies", $city_name_of_post);
                 array_push($city_names, $city_name_of_post);
-            }else{
+            } else {
                 logging("Not add in cookies", $city_name_of_post);
             }
-            
+        }
+
+        function clear() {
+            if (array_key_exists('clear', $_POST)) {
+                $clear = $_POST['clear'];
+                logging("clear", $clear);
+                logging("clear()", "Clear!");
+                $_COOKIE = array();
+            } else {
+                logging("clear()", "Not clear!");
+            }
         }
 
         function check_string($string) {
-//            logging("string", $string);
-//            logging("strlen", strlen($string));
-//            logging("strlen 2", strlen($string) > 0);
             return strlen($string) > 0;
         }
 
@@ -52,22 +62,19 @@ and open the template in the editor.
             return $_SERVER["REQUEST_METHOD"] == "POST";
         }
 
-        function check_cookies() {
-            return array_key_exists("CITY_NAMES", $_COOKIE);
-        }
-
         function say_city($city_name) {
             echo "<p>" . "$city_name" . "</p>";
         }
 
         function logging($messages, $args) {
-            echo $messages . ": ";
-            print_r($args);
-            echo "<br>";
+            //echo $messages . ": ";
+            //print_r($args);
+            //echo "<br>";
         }
         ?>
         <form action="" method="post">
             Enter city name:  <input type="text" name="cityName" /> <br/>
+            Clear cookies:  <input type="checkbox" name="clear"/> <br/>
             <input type="submit" value="Go!" />
         </form>
     </body>
