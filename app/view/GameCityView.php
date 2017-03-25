@@ -12,30 +12,24 @@ and open the template in the editor.
     </head>
     <body>
         <?php
+        spl_autoload_register();
         logging('COOKIE', $_COOKIE);
         logging('POST', $_POST);
         if (check_post()) {
             clear();
-            $city_names = [];
-            if (array_key_exists('CITY_NAMES', $_COOKIE)) {
-                $city_names = unserialize($_COOKIE["CITY_NAMES"]);
-            }
-            add_city_name_in_cookis($city_names);
-            logging("Result = ", $city_names);
-            setcookie("CITY_NAMES", serialize($city_names));
+            $cookies_manager = new cookies_manager();
+            $cookies_manager->init();
+            $city_new = $_POST['cityName'];
 
+            if (check_string($city_new)) {
+                $cookies_manager->addCity($city_new);
+            }
+
+            $cookies_manager->save();
+
+            $city_names = $cookies_manager->get_city_names();
             foreach ($city_names as $value) {
                 say_city($value);
-            }
-        }
-
-        function add_city_name_in_cookis(&$city_names) {
-            $city_name_of_post = get_city_name_of_post();
-            if (check_string($city_name_of_post)) {
-                logging("Add in cookies", $city_name_of_post);
-                array_push($city_names, $city_name_of_post);
-            } else {
-                logging("Not add in cookies", $city_name_of_post);
             }
         }
 
@@ -52,10 +46,6 @@ and open the template in the editor.
 
         function check_string($string) {
             return strlen($string) > 0;
-        }
-
-        function get_city_name_of_post() {
-            return $_POST['cityName'];
         }
 
         function check_post() {
