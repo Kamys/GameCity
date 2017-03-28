@@ -1,18 +1,12 @@
 <!DOCTYPE html>
-<!--
-To change this license header, choose License Headers in Project Properties.
-To change this template file, choose Tools | Templates
-and open the template in the editor.
--->
 <html>
     <head>
-        <meta charset="UTF-8">
         <meta charset="UTF-8">
         <title></title>
     </head>
     <body>
         <?php
-        spl_autoload_register();
+        include $_SERVER['DOCUMENT_ROOT'] . "\app\model\cookies_manager.php";
         logging('COOKIE', $_COOKIE);
         logging('POST', $_POST);
         if (check_post()) {
@@ -57,9 +51,9 @@ and open the template in the editor.
         }
 
         function logging($messages, $args) {
-            //echo $messages . ": ";
-            //print_r($args);
-            //echo "<br>";
+//            echo $messages . ": ";
+//            print_r($args);
+//            echo "<br>";
         }
         ?>
         <form action="" method="post">
