@@ -6,7 +6,9 @@
 </head>
 <body>
 <?php
-
+//TODO: recode.
+/*include $_SERVER['DOCUMENT_ROOT'] . "\src\model\cookies_manager.php";
+include $_SERVER['DOCUMENT_ROOT'] . "\src\model\game.php";*/
 
 logging('COOKIE', $_COOKIE);
 logging('POST', $_POST);
