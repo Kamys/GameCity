@@ -10,6 +10,12 @@ and open the template in the editor.
     <title></title>
 </head>
 <body>
-<a href="app/view/GameCityView.php">Go to GameCity!</a>
+<?php
+include('lib/log4php/Logger.php');
+Logger::configure('src/main/res/config.xml');
+$logger = Logger::getLogger("main");
+$logger->info("This is an informational message.");
+$logger->warn("I'm not feeling so good...");
+?>
 </body>
 </html>
