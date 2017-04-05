@@ -19,7 +19,7 @@ $logger->info("==========Start==========");
 
 
 $gameInCity = new game_in_city();
-$gameInCity->message(read_json(), "", "", null);
+$gameInCity->message(read_json(), "123456", "Сэр", null);
 
 function read_json()
 {

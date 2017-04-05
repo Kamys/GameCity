@@ -1,8 +1,13 @@
 {
-  "type": "group_join",
+  "type": "message_new",
   "object": {
-    "user_id": 1,
-    "join_type": "approved"
+    "id": 4304,
+    "date": 1491305107,
+    "out": 0,
+    "user_id": 257029877,
+    "read_state": 0,
+    "title": " ... ",
+    "body": "Привет!"
   },
-  "group_id": 1
+  "group_id": 134118199
 }
