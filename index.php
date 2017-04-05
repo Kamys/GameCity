@@ -12,10 +12,23 @@ and open the template in the editor.
 <body>
 <?php
 include('lib/log4php/Logger.php');
+include('src/main/php/GameInCity.php');
 Logger::configure('src/main/res/config.xml');
 $logger = Logger::getLogger("main");
-$logger->info("This is an informational message.");
-$logger->warn("I'm not feeling so good...");
+$logger->info("==========Start==========");
+
+
+$gameInCity = new GameInCity();
+$gameInCity->message(read_json(), "", "", null);
+
+function read_json()
+{
+    $json_file_path = "src/test/res/example_data_action.json";
+    $json_file = fopen($json_file_path, "r") or die("Unable to open file!");
+
+    $json_string = fread($json_file, filesize($json_file_path));
+    return $json_array = json_decode($json_string);
+}
 ?>
 </body>
 </html>

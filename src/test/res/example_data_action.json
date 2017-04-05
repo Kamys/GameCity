@@ -1,0 +1,8 @@
+{
+  "type": "group_join",
+  "object": {
+    "user_id": 1,
+    "join_type": "approved"
+  },
+  "group_id": 1
+}

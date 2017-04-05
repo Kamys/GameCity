@@ -9,13 +9,11 @@
 
     <appender name="consoleAppender" class="LoggerAppenderConsole"/>
 
-    <logger name="main">
-        <level value="DEBUG"/>
-        <appender_ref ref="consoleAppender"/>
-    </logger>
+
 
     <root>
         <level value="DEBUG"/>
         <appender_ref ref="logFile"/>
+        <appender_ref ref="consoleAppender"/>
     </root>
 </configuration>
