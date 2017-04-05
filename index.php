@@ -12,13 +12,13 @@ and open the template in the editor.
 <body>
 <?php
 include('lib/log4php/Logger.php');
-include('src/main/php/GameInCity.php');
+include('src/main/php/game_in_city.php');
 Logger::configure('src/main/res/config.xml');
 $logger = Logger::getLogger("main");
 $logger->info("==========Start==========");
 
 
-$gameInCity = new GameInCity();
+$gameInCity = new game_in_city();
 $gameInCity->message(read_json(), "", "", null);
 
 function read_json()

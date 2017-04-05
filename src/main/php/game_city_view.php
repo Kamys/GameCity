@@ -15,12 +15,11 @@ logging('POST', $_POST);
 if (check_post()) {
     clear();
     $cookies_manager = new cookies_array_manager("CITY_NAMES");
-    $game = new game();
-    $game->init();
+    $game = new game(array("Белгород", "Давлеканово", "Обоянь"));
     $cookies_manager->init();
     $city_new = $_POST['cityName'];
 
-    if (check_string($city_new) and $game->say_word($city_new)) {
+    if (check_string($city_new) and $game->say_city($city_new)) {
         $cookies_manager->add($city_new);
     } else {
         logging("Failed", "Failed add word");

@@ -1,15 +1,15 @@
 <?php
 
 /**
- * This main facade for module is GameInCity.
- * Use this for work with module is GameInCity.
+ * This main facade for module is gameincity.
+ * Use this for work with module is gameincity.
  */
-class GameInCity
+class game_in_city
 {
     private $log;
 
     /**
-     * GameInCity constructor.
+     * game_in_city constructor.
      */
     public function __construct()
     {
@@ -19,6 +19,7 @@ class GameInCity
 
     /**
      * Use for handling user messages.
+     *
      * @param $data array content data about action.
      * @param $token string need for use action with group from vk.
      * @param $user_sex string content user sex.
