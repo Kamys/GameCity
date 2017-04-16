@@ -9,7 +9,7 @@ interface city_names_manager
 
     function save_city_names_use(array $city_names_use);
 
-    function get__city_names(): array;
+    function get_city_names(): array;
 
-    function get__city_names_use(): array;
+    function get_city_names_use(): array;
 }

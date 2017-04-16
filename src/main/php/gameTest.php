@@ -2,26 +2,47 @@
 
 use PHPUnit\Framework\TestCase;
 
+include "game.php";
+
 class gameTest extends TestCase
 {
-    private $game;
     private $array_city_names = array("Белгород", "Давлеканово", "Обоянь");
 
-    /**
-     * gameTest constructor.
-     */
-    public function __construct()
+    // private $game;
+
+
+    protected function setUp()
     {
-        $this->game = new game($this->array_city_names, new default_manager());
+        //$this->game = new game($this->array_city_names, new default_manager());
     }
 
-    public function test_go()
+    public function test_say_city_should_not_be_repetitions()
     {
-        $this->assertTrue(false);
+        $game = new game($this->array_city_names, new default_manager());
+        $city_name = "Белгород";
+        $say_city_first = $game->say_city($city_name);
+        $say_city_two = $game->say_city($city_name);
+
+        $this->assertTrue($say_city_first, "First call say_city() need return true.");
+        $this->assertFalse($say_city_two, "Two call say_city() need return false.");
     }
+
+    public function test_say_city_should_be_in_list()
+    {
+        $game = new game($this->array_city_names, new default_manager());
+        $city_name = "Нью-Йорк";
+        $say_city_first = $game->say_city($city_name);
+
+        $this->assertFalse($say_city_first, "Should return false. Because \"$city_name\" not in the list. ");
+
+    }
+
+    //TODO: add test for status game.
 
 
 }
+
+include "city_names_manager.php";
 
 /**
  * Class default_manager need for test.
@@ -29,8 +50,8 @@ class gameTest extends TestCase
 class default_manager implements city_names_manager
 {
 
-    private $city_names;
-    private $city_names_use;
+    private $city_names = [];
+    private $city_names_use = [];
 
     function save_city_names(array $city_names)
     {
@@ -42,12 +63,12 @@ class default_manager implements city_names_manager
         $this->city_names_use = $city_names_use;
     }
 
-    function get__city_names(): array
+    function get_city_names(): array
     {
         return $this->city_names;
     }
 
-    function get__city_names_use(): array
+    function get_city_names_use(): array
     {
         return $this->city_names_use;
     }

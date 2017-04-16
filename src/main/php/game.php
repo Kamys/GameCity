@@ -48,8 +48,8 @@ class game
      */
     private function init_game_status()
     {
-        $this->city_names = $this->city_names_manager->get__city_names();
-        $this->city_names_used = $this->city_names_manager->get__city_names_use();
+        $this->city_names = $this->city_names_manager->get_city_names();
+        $this->city_names_used = $this->city_names_manager->get_city_names_use();
     }
 
     /**
@@ -60,7 +60,7 @@ class game
      *
      * @return bool successful say name city.
      */
-    function say_city($city_name)
+    public function say_city($city_name): bool
     {
         if ($this->check_city($city_name)) {
             $this->delete_city_name($city_name);
