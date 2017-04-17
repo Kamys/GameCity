@@ -7,7 +7,7 @@ include "logger_handler.php";
 
 class game_test extends TestCase
 {
-    private $array_city_names = array("Белгород", "Давлеканово", "Обоянь");
+    private $array_city_names = array("белгород", "давлеканово", "обоянь");
 
     // private $game;
 
@@ -53,10 +53,10 @@ class game_test extends TestCase
         $this->assertFalse($game->say_city($city_name_two));
         $this->assertFalse($game->say_city($city_name_first));
 
-        $this->assertTrue($game->say_city($city_name_first));
+        $this->assertTrue($game->say_city($city_name_three));
+        $this->assertFalse($game->say_city($city_name_three));
         $this->assertFalse($game->say_city($city_name_first));
-        $this->assertFalse($game->say_city($city_name_three));
-        $this->assertFalse($game->say_city($city_name_three));
+        $this->assertFalse($game->say_city($city_name_two));
     }
 
     //TODO: add test for status game.

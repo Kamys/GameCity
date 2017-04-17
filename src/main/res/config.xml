@@ -1,3 +1,4 @@
+<?xml version="1.0" encoding="UTF-8"?>
 <configuration xmlns="http://logging.apache.org/log4php/">
 
     <appender name="logFile" class="LoggerAppenderFile">
@@ -8,7 +9,6 @@
     </appender>
 
     <appender name="consoleAppender" class="LoggerAppenderConsole"/>
-
 
 
     <root>

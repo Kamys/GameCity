@@ -7,6 +7,7 @@
 class game
 {
 
+    public static $array_exception_characters = array('ь', 'ъ', 'ё');
     private $log;
     /**
      * This array with cities names which can use as a answer.
@@ -62,7 +63,8 @@ class game
      */
     function check_city($city_name)
     {
-        $result = $this->check_city_in_array($city_name) and $this->check_city_name($city_name);
+        $city_name = mb_strtolower($city_name);
+        $result = $this->check_city_in_array($city_name) && $this->check_city_name($city_name);
         $this->log->debug("check_city: return $result");
         return $result;
     }
@@ -77,12 +79,25 @@ class game
      */
     function check_city_in_array($city_name)
     {
+        $this->log->debug("check_city_in_array: city_name = $city_name");
         $in_city_names = in_array($city_name, $this->city_names);
         $in_city_names_used = in_array($city_name, $this->city_names_used);
 
+        $this->log->debug(
+            "check_city_in_array: in_city_names = $in_city_names, " .
+            "in_city_names_used = $in_city_names_used");
         return ($in_city_names and !$in_city_names_used);
     }
 
+    /**
+     * Check first character is $city_name
+     * needs equals end character last city_name.
+     * Exception, some characters. (ь,ъ,ё)
+     *
+     * @param $city_name string
+     *
+     * @return bool
+     */
     private function check_city_name($city_name): bool
     {
         $count = count($this->city_names_used);
@@ -92,17 +107,34 @@ class game
             return true;
         }
         $past_city_name = $this->city_names_used[$count - 1];
-        $this->log->debug("check_city_name: past_city_name = $past_city_name");
-        $last_character = substr($past_city_name, -1);
-        $this->log->debug("check_city_name: last_character = $last_character");
+        $last_character = $this->last_character($past_city_name);
+
         $result = $this->check_first_character($city_name, $last_character);
         $this->log->debug("check_city_name: return $result");
         return $result;
     }
 
+    /**
+     * @param $past_city_name string
+     *
+     * @return string
+     */
+    private function last_character($past_city_name): string
+    {
+        $this->log->debug("last_character: past_city_name = $past_city_name");
+        $last_character = substr($past_city_name, -2);
+        if (in_array($last_character, $this::$array_exception_characters)) {
+            $last_character = substr($past_city_name, -3);
+        }
+        $this->log->debug("last_character: last_character = $last_character");
+        return $last_character;
+    }
+
     private function check_first_character($string, $first_character): bool
     {
-        $sub_string = substr($string, 0, 1);
+        $this->log->debug("check_first_character: string = $string, first_character = $first_character");
+        $sub_string = substr($string, 0, 2);
+        $this->log->debug("check_first_character: sub_string = $sub_string");
         $result = $sub_string == $first_character;
         $this->log->debug("check_first_character: return $result");
         return $result;
