@@ -15,7 +15,7 @@ logging('POST', $_POST);
 if (check_post()) {
     clear();
     $cookies_manager = new cookies_array_manager("CITY_NAMES");
-    $game = new game(array("Белгород", "Давлеканово", "Обоянь"));
+    $game = new game(array("Белгород", "Давлеканово", "Обоянь"), null);
     $cookies_manager->init();
     $city_new = $_POST['cityName'];
 

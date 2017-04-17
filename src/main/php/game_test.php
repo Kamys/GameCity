@@ -3,25 +3,25 @@
 use PHPUnit\Framework\TestCase;
 
 include "game.php";
+include "logger_handler.php";
 
-class gameTest extends TestCase
+class game_test extends TestCase
 {
     private $array_city_names = array("Белгород", "Давлеканово", "Обоянь");
 
     // private $game;
 
 
-    protected function setUp()
+    public static function setUpBeforeClass()
     {
-        //$this->game = new game($this->array_city_names, new default_manager());
+        logger_handler::logger_init();
     }
 
     public function test_say_city_should_not_be_repetitions()
     {
         $game = new game($this->array_city_names, new default_manager());
-        $city_name = "Белгород";
-        $say_city_first = $game->say_city($city_name);
-        $say_city_two = $game->say_city($city_name);
+        $say_city_first = $game->say_city($this->array_city_names[0]);
+        $say_city_two = $game->say_city($this->array_city_names[0]);
 
         $this->assertTrue($say_city_first, "First call say_city() need return true.");
         $this->assertFalse($say_city_two, "Two call say_city() need return false.");
@@ -35,6 +35,28 @@ class gameTest extends TestCase
 
         $this->assertFalse($say_city_first, "Should return false. Because \"$city_name\" not in the list. ");
 
+    }
+
+    public function test_full()
+    {
+        $game = new game($this->array_city_names, new default_manager());
+
+        $city_name_first = $this->array_city_names[0];
+        $city_name_two = $this->array_city_names[1];
+        $city_name_three = $this->array_city_names[2];
+
+        $this->assertTrue($game->say_city($city_name_first));
+        $this->assertFalse($game->say_city($city_name_first));
+        $this->assertFalse($game->say_city($city_name_three));
+
+        $this->assertTrue($game->say_city($city_name_two));
+        $this->assertFalse($game->say_city($city_name_two));
+        $this->assertFalse($game->say_city($city_name_first));
+
+        $this->assertTrue($game->say_city($city_name_first));
+        $this->assertFalse($game->say_city($city_name_first));
+        $this->assertFalse($game->say_city($city_name_three));
+        $this->assertFalse($game->say_city($city_name_three));
     }
 
     //TODO: add test for status game.

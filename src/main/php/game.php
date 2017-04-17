@@ -6,6 +6,8 @@
  */
 class game
 {
+
+    private $log;
     /**
      * This array with cities names which can use as a answer.
      * @var array.
@@ -17,7 +19,6 @@ class game
      * @var array.
      */
     private $city_names_used;
-
     /**
      * Use for save status game.
      * Save $city_names and $city_names_used for continue game.
@@ -27,9 +28,100 @@ class game
 
     function __construct(array $array_city_names, city_names_manager $city_names_manager)
     {
+        $this->log = Logger::getLogger(__CLASS__);
         $this->city_names = $array_city_names;
         $this->city_names_manager = $city_names_manager;
         $this->city_names_used = array();
+    }
+
+    /**
+     * Use for say new city name.
+     * Check can say city name if yes add him in
+     *
+     * @param $city_name string which need say.
+     *
+     * @return bool successful say name city.
+     */
+    public function say_city($city_name): bool
+    {
+        $this->log->info("say_city: $city_name");
+        if ($this->check_city($city_name)) {
+            $this->delete_city_name($city_name);
+            array_push($this->city_names_used, $city_name);
+            return true;
+        }
+        return false;
+    }
+
+    /**
+     * Check it is possible say city name.
+     *
+     * @param $city_name string which need check.
+     *
+     * @return bool can say city name.
+     */
+    function check_city($city_name)
+    {
+        $result = $this->check_city_in_array($city_name) and $this->check_city_name($city_name);
+        $this->log->debug("check_city: return $result");
+        return $result;
+    }
+
+    /**
+     * City name can say if city name contains in $this->city_names
+     * and not contains in $this->city_names_used.
+     *
+     * @param $city_name string which need check.
+     *
+     * @return bool can say city name.
+     */
+    function check_city_in_array($city_name)
+    {
+        $in_city_names = in_array($city_name, $this->city_names);
+        $in_city_names_used = in_array($city_name, $this->city_names_used);
+
+        return ($in_city_names and !$in_city_names_used);
+    }
+
+    private function check_city_name($city_name): bool
+    {
+        $count = count($this->city_names_used);
+        $this->log->debug("check_city_name: count = $count");
+        if ($count == 0) {
+            $this->log->debug("check_city_name: This firs city name. Return true");
+            return true;
+        }
+        $past_city_name = $this->city_names_used[$count - 1];
+        $this->log->debug("check_city_name: past_city_name = $past_city_name");
+        $last_character = substr($past_city_name, -1);
+        $this->log->debug("check_city_name: last_character = $last_character");
+        $result = $this->check_first_character($city_name, $last_character);
+        $this->log->debug("check_city_name: return $result");
+        return $result;
+    }
+
+    private function check_first_character($string, $first_character): bool
+    {
+        $sub_string = substr($string, 0, 1);
+        $result = $sub_string == $first_character;
+        $this->log->debug("check_first_character: return $result");
+        return $result;
+    }
+
+    /**
+     * Use for delete city name from $this->city_names.
+     *
+     * @param $city_name string which need delete.
+     *
+     * @throws Exception if failed found city name in $this->city_names.
+     */
+    private function delete_city_name($city_name)
+    {
+        if (($key = array_search($city_name, $this->city_names)) !== false) {
+            unset($this->city_names[$key]);
+        } else {
+            throw new Exception("Failed delete_city_name(). Name city not found.");
+        }
     }
 
     /**
@@ -50,56 +142,5 @@ class game
     {
         $this->city_names = $this->city_names_manager->get_city_names();
         $this->city_names_used = $this->city_names_manager->get_city_names_use();
-    }
-
-    /**
-     * Use for say new city name.
-     * Check can say city name if yes add him in
-     *
-     * @param $city_name string which need say.
-     *
-     * @return bool successful say name city.
-     */
-    public function say_city($city_name): bool
-    {
-        if ($this->check_city($city_name)) {
-            $this->delete_city_name($city_name);
-            array_push($this->city_names_used, $city_name);
-            return true;
-        }
-        return false;
-    }
-
-    /**
-     * Use for delete city name from $this->city_names.
-     *
-     * @param $city_name string which need delete.
-     *
-     * @throws Exception if failed found city name in $this->city_names.
-     */
-    private function delete_city_name($city_name)
-    {
-        if (($key = array_search($city_name, $this->city_names)) !== false) {
-            unset($this->city_names[$key]);
-        } else {
-            throw new Exception("Failed delete_city_name(). Name city not found.");
-        }
-    }
-
-    /**
-     * Check it is possible say city name.
-     * City name can say if city name contains in $this->city_names
-     * and not contains in $this->city_names_used.
-     *
-     * @param $city_name string which need check.
-     *
-     * @return bool can say city name.
-     */
-    function check_city($city_name)
-    {
-        $in_city_names = in_array($city_name, $this->city_names);
-        $in_city_names_used = in_array($city_name, $this->city_names_used);
-
-        return ($in_city_names and !$in_city_names_used);
     }
 }

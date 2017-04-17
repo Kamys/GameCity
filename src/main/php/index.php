@@ -11,12 +11,12 @@ and open the template in the editor.
 </head>
 <body>
 <?php
-include('lib/log4php/Logger.php');
-include('src/main/php/game_in_city.php');
+include('game_in_city.php');
 Logger::configure('src/main/res/config.xml');
 $logger = Logger::getLogger("main");
 $time = date("m.d.y H:m:s");
 $logger->info("==========Start in $time==========");
+$logger->info('Dir = ' . __DIR__ . '/lib/log4php/Logger.php');
 
 
 $gameInCity = new game_in_city();
