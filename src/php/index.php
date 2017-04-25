@@ -18,7 +18,6 @@ $time = date("m.d.y H:m:s");
 $logger->info("==========Start in $time==========");
 $logger->info('Dir = ' . __DIR__ . '/lib/log4php/Logger.php');
 
-
 $gameInCity = new game_in_city();
 $gameInCity->message(read_json(), "123456", "Сэр", null);
 
