@@ -2,15 +2,12 @@
 
 use PHPUnit\Framework\TestCase;
 
-include "game.php";
-include "logger_handler.php";
+include "../php/game.php";
+include "../php/logger_handler.php";
 
 class game_test extends TestCase
 {
     private $array_city_names = array("белгород", "давлеканово", "обоянь");
-
-    // private $game;
-
 
     public static function setUpBeforeClass()
     {
@@ -61,10 +58,9 @@ class game_test extends TestCase
 
     //TODO: add test for status game.
 
-
 }
 
-include "city_names_manager.php";
+include "../php/city_names_manager.php";
 
 /**
  * Class default_manager need for test.
